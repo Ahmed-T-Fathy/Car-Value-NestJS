@@ -7,6 +7,8 @@ import {
   Param,
   Post,
   Patch,
+  ValidationPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
@@ -21,13 +23,13 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param("id") id: string): UsersEntity {
+  findOne(@Param("id",ParseUUIDPipe) id: string): UsersEntity {
     return this.users.find((user:UsersEntity)=>user.id===id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() user: UsersEntity):UsersEntity {
+  create(@Body() user: CreateUserDto):UsersEntity {
     const newUser:UsersEntity={
         ...user,
         id:uuid()
