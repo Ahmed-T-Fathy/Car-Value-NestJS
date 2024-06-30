@@ -14,34 +14,30 @@ import { UpdateUserDto } from './dtos/update-user.dto';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersEntity } from './users.entity';
 import {v4 as uuid}from 'uuid';
+import { UsersService } from './users.service';
 @Controller('users')
 export class UsersController {
-  private readonly users: UsersEntity[] = [];
+
+  constructor (private readonly userService:UsersService){}
   @Get()
   find(): UsersEntity[] {
-    return this.users;
+    return this.userService.findUsers();
   }
 
   @Get(':id')
   findOne(@Param("id",ParseUUIDPipe) id: string): UsersEntity {
-    return this.users.find((user:UsersEntity)=>user.id===id);
+    return this.userService.findUserById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   create(@Body() user: CreateUserDto):UsersEntity {
-    const newUser:UsersEntity={
-        ...user,
-        id:uuid()
-    }
-    this.users.push(newUser)
-    return newUser;
+    
+    return this.userService.createUser(user);
   }
 
   @Patch(':id')
   update(@Param() id: string, @Body() updateUserDto: UpdateUserDto) {
-    const index=this.users.findIndex(user=>user.id===id);
-    this.users[index]={...this.users[index],...updateUserDto};
-    return this.users[index];
+    return this.userService.updateUser(id, updateUserDto);
   }
 }
