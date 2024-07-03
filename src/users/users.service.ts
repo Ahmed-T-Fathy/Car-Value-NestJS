@@ -8,7 +8,7 @@ import { UserRepository } from './user.repository';
 @Injectable()
 export class UsersService {
   constructor(
-    @Inject('USER_REPOSITORY')
+    @Inject('UserRepository')
     private readonly userRepo: UserRepository,
     private dataSource: DataSource,
   ) {}

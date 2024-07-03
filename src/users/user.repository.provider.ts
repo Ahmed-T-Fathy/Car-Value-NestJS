@@ -3,7 +3,7 @@ import { DataSource } from 'typeorm';
 import { UserRepository } from './user.repository';
 
 export const UserRepositoryProvider = {
-  provide: 'USER_REPOSITORY',
+  provide: 'UserRepository',
   useFactory: (dataSource: DataSource) => {
     return new UserRepository(dataSource.manager);
   },
