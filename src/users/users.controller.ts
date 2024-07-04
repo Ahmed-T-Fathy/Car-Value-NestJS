@@ -1,7 +1,9 @@
-import { Body, Controller, Param, Post ,Get} from '@nestjs/common';
+import { Body, Controller, Param, Post ,Get, Patch,Delete, NotFoundException, UseInterceptors} from '@nestjs/common';
 import { CreateUserDto } from './dtos/create.user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
+import { UpdateUserDto } from './dtos/update.user.dto';
+import { SerializeInterceptor } from 'src/interceptors/serialize.interceptor';  
 
 @Controller('users')
 export class UsersController {
@@ -12,13 +14,26 @@ export class UsersController {
     return this.usersService.createUser(email, password);
   }
 
+  @UseInterceptors(SerializeInterceptor)
   @Get(':id')
-  getUser(@Param('id') id: number) {
-    return this.usersService.findOne(id);
+  async getUser(@Param('id') id: number) {
+    const user= await this.usersService.findOne(id);
+    if(!user)throw new NotFoundException("user not found!");
+    return user;
   }
 
   @Get()
-  async getAllUsers(@Body('email') email:string):Promise<User[]>{
+  getAllUsers(@Body('email') email:string):Promise<User[]>{
     return this.usersService.find(email);
+  }
+
+  @Patch(':id')
+  updateUser(@Param('id') id:number,@Body() data:UpdateUserDto){
+    return this.usersService.update(id,data);
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id') id:number){
+    return this.usersService.remove(id);
   }
 }

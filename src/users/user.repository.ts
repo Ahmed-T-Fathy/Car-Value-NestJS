@@ -1,6 +1,5 @@
-import { EntityManager, EntityRepository, Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { User } from './user.entity';
-import { Injectable } from '@nestjs/common';
 
 
 export class UserRepository extends Repository<User> {
