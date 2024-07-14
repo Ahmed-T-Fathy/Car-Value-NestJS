@@ -1,0 +1,15 @@
+
+POST http://localhost:3000/users/signup
+content-type: application/json
+
+{
+    "email":"ahmed.tarek124419@gmail.commaher@gmail.com",
+    "password":"12345678"
+}
+
+### signup user 
+
+
+DELETE http://localhost:3000/users/5
+content-type: application/json
+{}

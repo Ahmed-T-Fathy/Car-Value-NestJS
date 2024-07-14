@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './user.entity';
-import { DataSource, ILike,Like, Repository } from 'typeorm';
+import { DataSource, ILike, Like, Repository } from 'typeorm';
 import { emit } from 'process';
 import { UserRepository } from './user.repository';
 @Injectable()
@@ -39,22 +39,21 @@ export class UsersService {
   }
 
   async find(email: string) {
-    
-
+    // console.log('in find');
     return await this.userRepo.findUserWithEmailRegex(email);
   }
-  async update(id: number, attrs: Partial<User>) :Promise<User|null>{
+  async update(id: number, attrs: Partial<User>): Promise<User | null> {
     const user = await this.userRepo.findOneBy({ id });
-    if(!user) throw new NotFoundException("User not found");
+    if (!user) throw new NotFoundException('User not found');
 
     Object.assign(user, attrs);
     return this.userRepo.save(user);
-   }
+  }
 
-   async  remove(id:number){
-    const userToBeDelete=await this.userRepo.findOneBy({id});
-    if(!userToBeDelete) throw new NotFoundException("User not found");
+  async remove(id: number) {
+    const userToBeDelete = await this.userRepo.findOneBy({ id });
+    if (!userToBeDelete) throw new NotFoundException('User not found');
 
     return this.userRepo.remove(userToBeDelete);
-   }
+  }
 }
