@@ -7,8 +7,10 @@ import { AuthService } from './auth.service';
 import { UserRepositoryProvider } from './user.repository.provider';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { CurrentUserInterceptor } from './interceptors/current-user.interceptor';
+
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
   providers: [
     UsersService,
