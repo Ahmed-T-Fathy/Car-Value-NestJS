@@ -18,7 +18,7 @@ import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { AuthGard } from 'src/guards/auth.gard';
+import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('users')
 export class UsersController {
   constructor(
@@ -27,8 +27,8 @@ export class UsersController {
   ) {}
   @Post('createuser')
   createUser(@Body() userObj: CreateUserDto) {
-    const { email, password } = userObj;
-    return this.usersService.createUser(email, password);
+  // const { email, password } = userObj;
+  // return this.usersService.createUser(email, password);
   }
 
   // @Serialize(UserDto)
@@ -57,9 +57,9 @@ export class UsersController {
 
   @Post('signup')
   async signup(@Body() userDto: CreateUserDto, @Session() session: any) {
-    const { email, password } = userDto;
+    const { email, password,role } = userDto;
     // console.log("signup");
-    const user = await this.authService.signup(email, password);
+    const user = await this.authService.signup(email, password , role);
     session.userId = user.id;
     return user;
   }
@@ -89,7 +89,7 @@ export class UsersController {
 
   @Serialize(UserDto)
   @Get('/whoami')
-  @UseGuards(AuthGard)
+  @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: string) {
     console.log('here');
     console.log(user);

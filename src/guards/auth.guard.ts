@@ -5,7 +5,11 @@ import{
 } from '@nestjs/common'
 import { Observable } from 'rxjs'
 
-export class AuthGard implements CanActivate{
+export class AuthGuard implements CanActivate{
+    constructor( private str:string){
+        console.log(str);
+        
+    }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         
         const req= context.switchToHttp().getRequest();

@@ -4,6 +4,7 @@ import { User } from './user.entity';
 import { DataSource, ILike, Like, Repository } from 'typeorm';
 import { emit } from 'process';
 import { UserRepository } from './user.repository';
+import { Role } from './roles.enum';
 @Injectable()
 export class UsersService {
   constructor(
@@ -11,7 +12,7 @@ export class UsersService {
     private readonly userRepo: UserRepository,
     private dataSource: DataSource,
   ) {}
-  async createUser(email: string, password: string) {
+  async createUser(email: string, password: string,role:Role) {
     /* Transactions are useful for ensuring that a series of
     database operations either all succeed or
     all fail, maintaining data integrity.*/
@@ -21,7 +22,7 @@ export class UsersService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const user = this.userRepo.create({ email, password });
+      const user = this.userRepo.create({ email, password ,role});
       const savedUser = await queryRunner.manager.save(user);
       await queryRunner.commitTransaction();
       return savedUser;

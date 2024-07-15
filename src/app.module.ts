@@ -12,11 +12,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: `.env.development`,
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (cofig: ConfigService) => {
+        console.log(cofig.get<string>('DB_NAME'))
+        console.log(`.env.development`)
         return {
           type: 'sqlite',
           database: cofig.get<string>('DB_NAME'),

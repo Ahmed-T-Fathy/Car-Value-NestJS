@@ -2,6 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { UsersService } from './users.service';
 import { randomBytes, scrypt as _scrypt, Verify } from 'crypto';
 import { promisify } from 'util';
+import { Role } from './roles.enum';
 
 const scrypt = promisify(_scrypt);
 
@@ -11,7 +12,7 @@ export class AuthService {
     // console.log('UsersService:', userService); // Add this line
   }
 
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string,role:Role) {
     // check if user is exist
     // console.log("before find on signup");
     const users = await this.userService.find(email);
@@ -26,7 +27,7 @@ export class AuthService {
     const result:string=salt+'.'+hash.toString('hex');
 
     // create new user and save it
-    const user=await this.userService.createUser(email,result);
+    const user=await this.userService.createUser(email,result,role);
 
     // return user
     return user;
