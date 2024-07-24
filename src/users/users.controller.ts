@@ -11,14 +11,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create.user.dto';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dtos/update.user.dto';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
 import { CurrentUser } from './decorators/current-user.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
+// import { AuthGuard } from 'src/guards/auth.guard';
 @Controller('users')
 export class UsersController {
   constructor(
@@ -41,7 +41,7 @@ export class UsersController {
   // }
 
   @Get()
-  getAllUsers(@Body('email') email: string): Promise<User[]> {
+  getAllUsers(@Body('email') email: string): Promise<Users[]> {
     return this.usersService.find(email);
   }
 
@@ -60,7 +60,7 @@ export class UsersController {
     const { email, password,role } = userDto;
     // console.log("signup");
     const user = await this.authService.signup(email, password , role);
-    session.userId = user.id;
+    // session.userId = user.id;
     return user;
   }
 
@@ -71,7 +71,7 @@ export class UsersController {
     const user = await this.authService.signin(email, password);
     // console.log(user );
 
-    session.userId = user.id;
+    // session.userId = user.id;
     return user;
   }
 
@@ -89,7 +89,7 @@ export class UsersController {
 
   @Serialize(UserDto)
   @Get('/whoami')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   whoAmI(@CurrentUser() user: string) {
     console.log('here');
     console.log(user);

@@ -1,6 +1,6 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from './user.entity';
+import { Users } from './users.entity';
 import { DataSource, ILike, Like, Repository } from 'typeorm';
 import { emit } from 'process';
 import { UserRepository } from './user.repository';
@@ -43,7 +43,7 @@ export class UsersService {
     // console.log('in find');
     return await this.userRepo.findUserWithEmailRegex(email);
   }
-  async update(id: number, attrs: Partial<User>): Promise<User | null> {
+  async update(id: number, attrs: Partial<Users>): Promise<Users | null> {
     const user = await this.userRepo.findOneBy({ id });
     if (!user) throw new NotFoundException('User not found');
 

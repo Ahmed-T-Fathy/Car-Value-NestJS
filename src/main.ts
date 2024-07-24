@@ -12,18 +12,18 @@ async function bootstrap() {
     }),
   );
 
-  app.use(
-    cookieSession({
-      keys: ['asdfasfd'],
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        maxAge: 3,
-        expires : true,
-        httpOnly: true 
-      },
-    }),
-  );
+  // app.use(
+  //   cookieSession({
+  //     keys: ['asdfasfd'],
+  //     resave: false,
+  //     saveUninitialized: false,
+  //     cookie: {
+  //       maxAge: 3,
+  //       expires : true,
+  //       httpOnly: true 
+  //     },
+  //   }),
+  // );
 
   await app.listen(3000);
 }
